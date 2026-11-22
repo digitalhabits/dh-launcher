@@ -1,21 +1,28 @@
 import SwiftUI
 import LauncherCore
 
-/// Three ways to add an app: from the bundled catalog, via a Shortcut, or by hand.
+/// Three ways to add: tick common apps, or make a one-step Shortcut for any app or website.
 struct AddItemView: View {
+    @Environment(LauncherModel.self) private var model
+
     var body: some View {
         List {
             Section {
                 NavigationLink("Pick from common apps") { CatalogPickerView() }
-                NavigationLink("Via Shortcut (any app)") { ShortcutAddView() }
-                NavigationLink("Custom URL or link") { CustomAddView() }
+                NavigationLink("Add any app") { ShortcutGuideView(kind: .app, onSave: save) }
+                NavigationLink("Add a website") { ShortcutGuideView(kind: .website, onSave: save) }
             } footer: {
-                Text("iOS doesn't let apps see what's installed, so you choose the apps for your list. Common apps open with a link; a Shortcut works for any app.")
+                Text("iOS doesn't let apps see what's installed, so you choose what goes on your widget. Any app or website that isn't in the common list takes a one-step Shortcut, and \(Bundle.main.displayName) shows you how.")
             }
         }
         .navigationTitle("Add app")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { DoneButton() }
+    }
+
+    private func save(_ item: LauncherItem) {
+        model.add(item)
+        model.sheet = nil
     }
 }
 
@@ -60,7 +67,7 @@ struct CatalogPickerView: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            Text("New apps go at the end of your widget. If an app doesn't open, add it with a Shortcut instead: this list's links come from the community and may be out of date.")
+            Text("New apps go at the end of your widget. If one doesn't open when you tap it, add it with a Shortcut instead.")
                 .font(.footnote).foregroundStyle(.secondary)
                 .padding().frame(maxWidth: .infinity).background(.bar)
         }
@@ -71,71 +78,5 @@ struct CatalogPickerView: View {
         let items = entries.map { LauncherItem(name: $0.name, target: .urlScheme($0.scheme)) }
         model.add(contentsOf: items)
         model.sheet = nil
-    }
-}
-
-struct ShortcutAddView: View {
-    @Environment(LauncherModel.self) private var model
-    @State private var appName = ""
-
-    var body: some View {
-        Form {
-            Section {
-                TextField("App name, e.g. Spotify", text: $appName)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .accessibilityIdentifier("shortcutAdd.appName")
-            } header: {
-                Text("Which app?")
-            } footer: {
-                Text("Next you'll make a one-action Shortcut that opens it. This works for every app, including ones without a URL scheme.")
-            }
-            Section {
-                NavigationLink("Next") {
-                    ShortcutGuideView(appName: appName.trimmingCharacters(in: .whitespaces)) { item in
-                        model.add(item)
-                        model.sheet = nil
-                    }
-                }
-                .disabled(appName.trimmingCharacters(in: .whitespaces).isEmpty)
-                .accessibilityIdentifier("shortcutAdd.next")
-            }
-        }
-        .navigationTitle("Via Shortcut")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct CustomAddView: View {
-    @Environment(LauncherModel.self) private var model
-    @State private var name = ""
-    @State private var link = ""
-
-    private var target: LaunchTarget? { LaunchRouter.target(fromUserInput: link) }
-
-    var body: some View {
-        Form {
-            Section {
-                TextField("Name", text: $name)
-                    .textInputAutocapitalization(.never)
-                TextField("spotify:// or https://…", text: $link)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .keyboardType(.URL)
-            } footer: {
-                Text("A URL scheme (like spotify://) opens the app directly. An https link opens in the browser, or in the app if it supports universal links.")
-            }
-            Section {
-                TestLaunchButton(title: "Test", target: target)
-                Button("Add") {
-                    guard let target else { return }
-                    model.add(LauncherItem(name: name.trimmingCharacters(in: .whitespaces), target: target))
-                    model.sheet = nil
-                }
-                .disabled(target == nil || name.trimmingCharacters(in: .whitespaces).isEmpty)
-            }
-        }
-        .navigationTitle("Custom")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

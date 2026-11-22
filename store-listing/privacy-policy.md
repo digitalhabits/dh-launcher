@@ -1,8 +1,8 @@
-# Digital Habits: Launcher — privacy policy
+# DH Launcher — privacy policy
 
 *Draft. Last updated: [date of publication].*
 
-Digital Habits: Launcher collects no personal data.
+DH Launcher collects no personal data.
 
 - **No data leaves your device.** The app makes no network requests. It has no
   analytics, no advertising and no crash reporting.

@@ -9,7 +9,7 @@ struct EditItemView: View {
     @State private var confirmDelete = false
 
     enum Kind: String, CaseIterable, Identifiable {
-        case scheme = "URL scheme", shortcut = "Shortcut", web = "Web link"
+        case scheme = "App link", shortcut = "Shortcut", web = "Web address"
         var id: String { rawValue }
     }
 
@@ -44,7 +44,8 @@ struct EditItemView: View {
             }
             Section {
                 Picker("Opens via", selection: $kind) {
-                    ForEach(Kind.allCases) { Text($0.rawValue).tag($0) }
+                    // Web addresses only for items saved by older versions; new ones use a Shortcut.
+                    ForEach(Kind.allCases.filter { $0 != .web || kind == .web }) { Text($0.rawValue).tag($0) }
                 }
                 TextField(placeholder, text: $value)
                     .textInputAutocapitalization(.never)
@@ -53,7 +54,7 @@ struct EditItemView: View {
                 TestLaunchButton(title: "Test", target: target)
                 if kind == .shortcut {
                     NavigationLink("Shortcut setup guide") {
-                        ShortcutGuideView(appName: draft.name, shortcutName: value, onSave: nil)
+                        ShortcutGuideView(kind: .app, name: draft.name, shortcutName: value, onSave: nil)
                     }
                 }
             } header: {

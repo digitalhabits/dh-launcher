@@ -165,7 +165,6 @@ final class LauncherModel {
 enum Sheet: Identifiable, Hashable {
     case add
     case edit(UUID)
-    case homeScreen
     case settings
     case setupGuide
     case shortcutGuide(appName: String)
@@ -174,7 +173,6 @@ enum Sheet: Identifiable, Hashable {
         switch self {
         case .add: "add"
         case .edit(let id): "edit-\(id)"
-        case .homeScreen: "home"
         case .settings: "settings"
         case .setupGuide: "setup"
         case .shortcutGuide(let name): "shortcut-\(name)"

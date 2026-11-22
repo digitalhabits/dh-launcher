@@ -1,7 +1,5 @@
 # DH Launcher
 
-*(Working title. The app name, bundle ID and licence are placeholders; see "For the owner" below.)*
-
 A free, open-source, minimal text launcher for iPhone, inspired by
 [Olauncher](https://github.com/tanujnotes/olauncher) for Android. It is a fresh
 SwiftUI/WidgetKit app; no Olauncher code is used.
@@ -34,7 +32,7 @@ SwiftUI/WidgetKit app; no Olauncher code is used.
   black wallpaper, one home-screen page and the large widget on it. The in-app
   setup guide walks through this.
 - **No list of installed apps.** You build your own list: from the bundled
-  catalog of URL schemes, via a Shortcut, or by typing a URL scheme or link.
+  list of common apps, or any app with a one-step Shortcut.
 - **Widgets cannot open other apps directly.** A widget tap always opens the
   host app, which immediately forwards to the target. You see a short black
   flicker. This bounce is unavoidable for now.
@@ -75,15 +73,16 @@ xcrun simctl install booted build/DerivedData/Build/Products/Debug-iphonesimulat
 
 ### Running on a device
 
-Set `BUNDLE_PREFIX` and `DEVELOPMENT_TEAM` in `project.yml`, run
-`xcodegen generate` again, and build from Xcode. The App Group is derived
-from the prefix (`group.<prefix>`) and must be registered for your team.
+Builds for a device use the Centre for Digital Habits team (`DEVELOPMENT_TEAM`
+in `project.yml`); Xcode registers the app IDs and App Group automatically when
+you are signed in to that team. Without access to it, set your own team and a
+different `BUNDLE_PREFIX`.
 
 ## Project layout
 
 | Path | What |
 |---|---|
-| `project.yml` | XcodeGen spec: targets, App Group, URL scheme, placeholders |
+| `project.yml` | XcodeGen spec: targets, bundle IDs, team, App Group, URL scheme |
 | `Launcher/` | The app: your list, add/edit, home-screen list, settings, guides, launch forwarding |
 | `LauncherWidget/` | The WidgetKit extension |
 | `LauncherCore/` | Swift package with all testable logic: models, JSON store, URL router, widget capacity, catalog |
@@ -135,12 +134,11 @@ See section 8 of `PLAN.md`: skipping the host-app bounce for universal links,
 a single dispatcher Shortcut, lock-screen and Control Center buttons, iPad,
 localisation and App Store release.
 
-## For the owner
+## Release
 
-These are placeholders, not decisions:
-
-1. **App name**: "DH Launcher" (`APP_DISPLAY_NAME` in `project.yml`).
-2. **Bundle ID prefix and team**: `org.example.dhlauncher`, no team
-   (`BUNDLE_PREFIX`, `DEVELOPMENT_TEAM` in `project.yml`).
-3. **Licence**: MIT (see `LICENSE`). GPL-3.0 would match Olauncher, but it
-   complicates distributing outside contributions through the App Store.
+- Name on the App Store and on the phone: **DH Launcher**.
+- Bundle ID `org.digitalhabits.launcher` (widget `org.digitalhabits.launcher.widget`,
+  App Group `group.org.digitalhabits.launcher`), team Centre for Digital Habits CIC.
+- Licence: MIT (see `LICENSE`).
+- `scripts/upload-app-store.sh` archives and uploads a build. See
+  `store-listing/SUBMISSION.md` for the rest.

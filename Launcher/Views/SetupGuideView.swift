@@ -1,12 +1,14 @@
 import SwiftUI
 
-/// How to make the widget the whole home screen. Text plus simple drawings.
+/// "How to use": making the widget the whole home screen (text plus simple
+/// drawings), then how to use the app itself.
 struct SetupGuideView: View {
     private let name = Bundle.main.displayName
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
+                Text("Make it your home screen").font(.title3.weight(.semibold))
                 Text("iOS doesn't allow replacing the home screen, but you can get close: a black wallpaper, one page, and the \(name) widget on it.")
                     .foregroundStyle(.secondary)
 
@@ -26,14 +28,25 @@ struct SetupGuideView: View {
                           text: "Touch and hold the home screen, tap Edit › Edit Pages, and untick every page except the one with the widget. Unticked pages are hidden, not deleted.") {
                     PhoneSketch { WidgetSketch(rows: 7) }
                 }
-                GuideStep(n: 5, title: "Keep the drawer one tap away",
+                GuideStep(n: 5, title: "Keep \(name) one tap away",
                           text: "Put \(name) in the dock as the only icon. Open it to change which apps are on the widget. For any other app, tap Search on the home screen.") {
                     PhoneSketch(dockIcon: true) { WidgetSketch(rows: 7) }
                 }
+
+                Divider()
+
+                Text("Using \(name)").font(.title3.weight(.semibold))
+                VStack(alignment: .leading, spacing: 14) {
+                    UseTip(title: "Open an app", text: "Tap its name, on the widget or in \(name).")
+                    UseTip(title: "Change the order", text: "In \(name), touch and hold a name and drag it up or down. The widget shows your apps from the top, as many as fit.")
+                    UseTip(title: "Edit or remove an app", text: "Touch and hold its name. Removing an app only takes it off the widget; the app itself stays on your iPhone.")
+                    UseTip(title: "Add apps", text: "Tap add app and tick the ones you want from the list of common apps.")
+                }
+                UseTip(title: "Add an app or website that isn't in the list", text: "Tap add app, then Add any app or Add a website. It takes a one-step Shortcut, and the guide shows each tap with a picture.")
             }
             .padding(24)
         }
-        .navigationTitle("Home screen setup")
+        .navigationTitle("How to use")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { DoneButton() }
     }
@@ -86,5 +99,17 @@ private struct WidgetSketch: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct UseTip: View {
+    let title: String
+    let text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title).font(.headline)
+            Text(text).font(.subheadline).foregroundStyle(.secondary)
+        }
     }
 }

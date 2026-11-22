@@ -31,7 +31,7 @@ struct FailureView: View {
 
     private var explanation: String {
         switch item.target {
-        case .urlScheme(let s): "Nothing on this iPhone answers to \(s). The app may not be installed, or it uses a different URL scheme. A Shortcut works for any app."
+        case .urlScheme: "The app may not be installed, or its link may have changed. Setting it up with a Shortcut works for every app."
         case .shortcut(let n): "iOS couldn't run the Shortcut \"\(n)\"."
         case .web(let u): "iOS couldn't open \(u.absoluteString)."
         }

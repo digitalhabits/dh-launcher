@@ -1,12 +1,12 @@
 [
   {
-    "name": "App Store",
-    "scheme": "itms-apps://",
+    "name": "Airbnb",
+    "scheme": "airbnb://",
     "verified": false
   },
   {
-    "name": "Audible",
-    "scheme": "audible://",
+    "name": "App Store",
+    "scheme": "itms-apps://",
     "verified": false
   },
   {
@@ -20,14 +20,14 @@
     "verified": false
   },
   {
-    "name": "Calculator",
-    "scheme": "calc://",
-    "verified": false
-  },
-  {
     "name": "Calendar",
     "scheme": "calshow://",
     "verified": true
+  },
+  {
+    "name": "Canva",
+    "scheme": "canvaeditor://",
+    "verified": false
   },
   {
     "name": "Chrome",
@@ -80,13 +80,23 @@
     "verified": true
   },
   {
-    "name": "Freeform",
-    "scheme": "freeform://",
+    "name": "Gmail",
+    "scheme": "googlegmail://",
     "verified": false
   },
   {
-    "name": "Gmail",
-    "scheme": "googlegmail://",
+    "name": "Google",
+    "scheme": "google://",
+    "verified": false
+  },
+  {
+    "name": "Google Calendar",
+    "scheme": "googlecalendar://",
+    "verified": false
+  },
+  {
+    "name": "Google Docs",
+    "scheme": "googledocs://",
     "verified": false
   },
   {
@@ -97,6 +107,11 @@
   {
     "name": "Google Maps",
     "scheme": "comgooglemaps://",
+    "verified": false
+  },
+  {
+    "name": "Google Photos",
+    "scheme": "googlephotos://",
     "verified": false
   },
   {
@@ -115,8 +130,18 @@
     "verified": false
   },
   {
+    "name": "KakaoTalk",
+    "scheme": "kakaotalk://",
+    "verified": false
+  },
+  {
     "name": "Kindle",
     "scheme": "kindle://",
+    "verified": false
+  },
+  {
+    "name": "LINE",
+    "scheme": "line://",
     "verified": false
   },
   {
@@ -145,6 +170,16 @@
     "verified": false
   },
   {
+    "name": "Microsoft Excel",
+    "scheme": "ms-excel://",
+    "verified": false
+  },
+  {
+    "name": "Microsoft Word",
+    "scheme": "ms-word://",
+    "verified": false
+  },
+  {
     "name": "Music",
     "scheme": "music://",
     "verified": false
@@ -170,8 +205,18 @@
     "verified": false
   },
   {
+    "name": "OneDrive",
+    "scheme": "ms-onedrive://",
+    "verified": false
+  },
+  {
     "name": "Outlook",
     "scheme": "ms-outlook://",
+    "verified": false
+  },
+  {
+    "name": "PayPal",
+    "scheme": "paypal://",
     "verified": false
   },
   {
@@ -230,6 +275,11 @@
     "verified": false
   },
   {
+    "name": "Snapchat",
+    "scheme": "snapchat://",
+    "verified": false
+  },
+  {
     "name": "Spotify",
     "scheme": "spotify://",
     "verified": false
@@ -255,13 +305,28 @@
     "verified": false
   },
   {
+    "name": "TikTok",
+    "scheme": "snssdk1233://",
+    "verified": false
+  },
+  {
     "name": "TV",
     "scheme": "videos://",
     "verified": false
   },
   {
+    "name": "Twitch",
+    "scheme": "twitch://",
+    "verified": false
+  },
+  {
     "name": "Uber",
     "scheme": "uber://",
+    "verified": false
+  },
+  {
+    "name": "Viber",
+    "scheme": "viber://",
     "verified": false
   },
   {
@@ -275,8 +340,18 @@
     "verified": true
   },
   {
+    "name": "Waze",
+    "scheme": "waze://",
+    "verified": false
+  },
+  {
     "name": "Weather",
     "scheme": "weather://",
+    "verified": false
+  },
+  {
+    "name": "WeChat",
+    "scheme": "weixin://",
     "verified": false
   },
   {

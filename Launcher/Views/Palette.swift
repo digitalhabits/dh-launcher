@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import LauncherCore
 
 /// Foreground/background colours for the chosen theme.
@@ -39,14 +40,17 @@ extension LauncherSettings.TextSize {
 }
 
 extension LauncherSettings {
+    /// The app's own text is sized for iPhone; on iPad everything is drawn larger so it reads the same.
+    @MainActor static let screenScale: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 1.6 : 1
+
     /// Item names in the drawer. Light in the system font; the brand font starts at Regular.
-    var drawerFont: Font {
-        Typography.font(fontStyle, size: textSize.drawerSize, weight: fontStyle == .system ? .light : .regular)
+    @MainActor var drawerFont: Font {
+        Typography.font(fontStyle, size: textSize.drawerSize * Self.screenScale, weight: fontStyle == .system ? .light : .regular)
     }
 
     /// Any other text drawn in the launcher's own style.
-    func font(size: CGFloat, weight: Font.Weight? = nil) -> Font {
-        Typography.font(fontStyle, size: size, weight: weight ?? (fontStyle == .system ? .light : .regular))
+    @MainActor func font(size: CGFloat, weight: Font.Weight? = nil) -> Font {
+        Typography.font(fontStyle, size: size * Self.screenScale, weight: weight ?? (fontStyle == .system ? .light : .regular))
     }
 }
 

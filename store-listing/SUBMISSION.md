@@ -17,21 +17,23 @@ What is ready in this folder, and what only the owner can do.
 
 A Release build for devices compiles without errors (`-configuration Release -sdk iphoneos`, unsigned).
 
-## Decisions and steps for the owner
+## Decided and done
 
-1. **App Store name.** The listing text uses "Digital Habits: Launcher", following "Digital Habits: To-Do". The name on the phone stays "DH Launcher" (`APP_DISPLAY_NAME`). Change both if you want something else.
-2. **Bundle ID, team, App Group.** In `project.yml`, set `BUNDLE_PREFIX` and `DEVELOPMENT_TEAM`. Register the app ID, the widget ID (`<prefix>.widget`) and the App Group `group.<prefix>` in the developer account. Run `xcodegen generate`.
-3. **Version.** `MARKETING_VERSION` is 0.1.0. Set 1.0.0 for the first release if you prefer.
-4. **Test on a real iPhone first.** Not done yet:
-   - **Phone** (`mobilephone://`) is not verified: the simulator has no Phone app. App Review will tap it, because it is a starter app.
-   - The black flash when a widget tap opens an app.
-   - The Shortcut route from start to end.
-5. **Source code claim.** Slide 5 says the source code is open (MIT). The GitHub repo `digitalhabits/dh-launcher` is private. Make it public before release, or change the slide (`scripts/store-assets.mjs`) and the README.
-6. **"Inspired by Olauncher for Android"** is in the Settings footer. Other apps' names are not in the store text or keywords (App Review guideline 2.3.7). Keep or remove the footer.
-7. **Privacy policy and support URL.** Put `privacy-policy.md` on digitalhabits.org (fill in the date and contact email). App Store Connect needs a privacy policy URL and a support URL.
-8. **App Privacy answers** in App Store Connect: "Data Not Collected".
-9. **Age rating:** answer "None" to every question (4+). **Price:** Free.
-10. **Upload:** archive in Xcode (Product > Archive) and upload, or add an iOS lane to fastlane like To-Do's.
+- Name on the App Store and on the phone: **DH Launcher**.
+- Bundle ID `org.digitalhabits.launcher`, widget `.widget`, App Group `group.org.digitalhabits.launcher`, team Centre for Digital Habits CIC (`JD647S9RT6`). Xcode registered the app IDs on the first archive.
+- Version 0.1, build 2. A signed Release archive builds (`scripts/upload-app-store.sh` archives and uploads).
+- The GitHub repo is public, so slide 5's "source code is open" is true.
+
+## Still to do
+
+1. **Create the app in App Store Connect**: Apps > + > New App. Platform iOS, name "DH Launcher", language English (UK), bundle ID `org.digitalhabits.launcher`, SKU e.g. `dh-launcher`, full access.
+2. **Upload the build**: `scripts/upload-app-store.sh`.
+3. **Test on a real iPhone** (via TestFlight or Xcode): Phone (`mobilephone://`, not verified on the simulator), the black flash on widget taps, and the Shortcut route.
+4. **Privacy policy and support URLs**: put `privacy-policy.md` on digitalhabits.org (date and contact email to fill in).
+5. **Fill in the version page**: subtitle, promotional text, description, keywords (from the `.txt` files), screenshots, App Preview video, support and privacy URLs, category Productivity, the review notes (`review-notes.txt`), and the build.
+6. **App Privacy**: "Data Not Collected". **Age rating**: none of the items (4+). **Price**: Free.
+7. **"Inspired by Olauncher for Android"** is in the Settings footer; keep or remove before submitting.
+8. **Submit for review.**
 
 ## Remake the pictures
 

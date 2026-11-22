@@ -1,4 +1,4 @@
-Thank you for reviewing Digital Habits: Launcher.
+Thank you for reviewing DH Launcher.
 
 What the app does
 The app is a home-screen widget plus the list of apps behind it. The user adds the apps they want (from a built-in list of URL schemes, or with a one-action Shortcut). Tapping a name in the widget or in the app opens that app.

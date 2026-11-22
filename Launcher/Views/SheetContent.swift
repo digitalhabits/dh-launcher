@@ -17,14 +17,21 @@ struct SheetContent: View {
                 } else {
                     Text("This item no longer exists.")
                 }
-            case .homeScreen:
-                HomeScreenListView()
             case .settings:
                 SettingsView()
             case .setupGuide:
                 SetupGuideView()
             case .shortcutGuide(let appName):
-                ShortcutGuideView(appName: appName, onSave: nil)
+                ShortcutGuideView(kind: .app, name: appName) { new in
+                    // From "Couldn't open": switch the existing item to the Shortcut.
+                    if var existing = model.items.first(where: { $0.name == appName }) {
+                        existing.target = new.target
+                        model.update(existing)
+                    } else {
+                        model.add(new)
+                    }
+                    model.sheet = nil
+                }
             }
         }
     }
@@ -59,7 +66,7 @@ struct TestLaunchButton: View {
         .alert("Couldn't open it", isPresented: $failed) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("iOS refused the link. For a URL scheme, the app may not be installed or may use a different scheme. For a Shortcut, check the name matches exactly.")
+            Text("The app may not be installed, or its link may have changed. If you used a Shortcut, check its name matches exactly.")
         }
     }
 }

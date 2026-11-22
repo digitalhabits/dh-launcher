@@ -3,6 +3,7 @@
  *
  *   node scripts/store-assets.mjs        # writes store-listing/screenshots/iphone-6.9/en/
  *   node scripts/store-assets.mjs 02     # one slide only
+ *   DEVICE=ipad node scripts/store-assets.mjs   # 13" iPad, writes .../ipad-13/en/
  *
  * Follows the To-Do store pictures (dh-planner: scripts/todo-store-assets.mjs):
  * each slide is a small HTML page with a heading, a few words and a picture of
@@ -16,7 +17,9 @@
  * the app's own list, used in the README.
  *
  * Size: 1320x2868, the 6.9" iPhone size App Store Connect asks for; it scales
- * these down for smaller iPhones.
+ * these down for smaller iPhones. With DEVICE=ipad: 2064x2752, the 13" iPad
+ * size, from iPad Pro 13" simulator screenshots in source-pictures/ipad/. The
+ * iPad page is laid out at 1588x2117 and drawn 1.3 times larger.
  */
 
 import { execFileSync } from "node:child_process";
@@ -26,11 +29,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SOURCE = path.join(ROOT, "store-listing/source-pictures");
-const OUT = path.join(ROOT, "store-listing/screenshots/iphone-6.9/en");
+const IPAD = process.env.DEVICE === "ipad";
+const SOURCE = path.join(ROOT, "store-listing/source-pictures", IPAD ? "ipad" : "");
+const OUT = path.join(ROOT, "store-listing/screenshots", IPAD ? "ipad-13" : "iphone-6.9", "en");
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const W = 1320;
-const H = 2868;
+// Pixel size of the picture, and the factor the page is drawn at.
+const PX_W = IPAD ? 2064 : 1320;
+const PX_H = IPAD ? 2752 : 2868;
+const SCALE = IPAD ? 1.3 : 1;
+// The page's own size in CSS pixels.
+const W = Math.round(PX_W / SCALE);
+const H = Math.round(PX_H / SCALE);
 
 // The colours of the To-Do slides.
 const INK = "#2f3a4a";
@@ -67,11 +76,13 @@ const BASE_CSS = `
   .phone { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 118px; overflow: hidden;
            box-shadow: 0 0 0 14px #0b0f15, 0 0 0 17px rgba(255,255,255,0.28), 0 50px 120px rgba(0,0,0,0.55); }
   .phone img { display: block; width: 100%; }
+  ${IPAD ? ".phone { border-radius: 64px; box-shadow: 0 0 0 22px #0b0f15, 0 0 0 25px rgba(255,255,255,0.28), 0 50px 120px rgba(0,0,0,0.55); }" : ""}
 `;
 
 /** A navy slide: heading, line under it, optional points, and the phone. */
 function appSlide({ heading, sub, points = [], shot, phoneWidth = 860, phoneTop }) {
-  const top = phoneTop ?? (points.length ? 1010 : 760);
+  let top = phoneTop ?? (points.length ? 1010 : 760);
+  if (IPAD) { phoneWidth = 1040; top = points.length ? 880 : 640; }
   return `<!doctype html><meta charset="utf-8"><style>${BASE_CSS}
     body { background: ${NAVY}; color: ${CREAM}; }
     h1 { font-size: 112px; padding: 190px 90px 0; }
@@ -93,7 +104,7 @@ function appSlide({ heading, sub, points = [], shot, phoneWidth = 860, phoneTop 
 function researchSlide() {
   return `<!doctype html><meta charset="utf-8"><style>${BASE_CSS}
     body { background: ${PAPER}; color: ${INK}; }
-    h1 { font-size: 112px; text-align: left; padding: 300px 96px 0; }
+    h1 { font-size: 112px; text-align: left; padding: ${IPAD ? 200 : 300}px 96px 0; }
     h1 span { font-weight: 400; }
     .points { list-style: none; padding: 0; margin: 130px 96px 0; }
     .points li { display: flex; align-items: center; gap: 26px; font-size: 62px; line-height: 1.8; }
@@ -118,7 +129,7 @@ function researchSlide() {
       </div>
       <div class="card">
         <h3>Your data stays with you</h3>
-        <div>${icon("lock", 48)}<span>Your list is kept on your iPhone. The app collects zero user data.</span></div>
+        <div>${icon("lock", 48)}<span>Your list is kept on your ${IPAD ? "iPad" : "iPhone"}. The app collects zero user data.</span></div>
         <div>${icon("code-xml", 48)}<span>Free, and the source code is open (MIT licence).</span></div>
       </div>
     </div>
@@ -156,7 +167,7 @@ for (const slide of SLIDES) {
   fs.writeFileSync(page, slide.html());
   const file = path.join(OUT, `${slide.id}.png`);
   execFileSync(CHROME, [
-    "--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1",
+    "--headless=new", "--disable-gpu", "--hide-scrollbars", `--force-device-scale-factor=${SCALE}`,
     `--window-size=${W},${H}`, `--screenshot=${file}`, `file://${page}`,
   ], { stdio: "ignore" });
   console.log(path.relative(ROOT, file));

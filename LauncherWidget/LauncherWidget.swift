@@ -65,6 +65,8 @@ struct LauncherWidgetView: View {
     private var visible: [LauncherItem] {
         WidgetCapacity.visibleItems(entry.items, size: size, settings: settings)
     }
+    /// Large and iPad's extra-large (twice as wide, same height) hold the same rows.
+    private var isLarge: Bool { family == .systemLarge || family == .systemExtraLarge }
     private var foreground: Color { settings.theme == .black ? .white : .black }
 
     var body: some View {
@@ -81,35 +83,56 @@ struct LauncherWidgetView: View {
                 .widgetURL(LaunchRouter.appURL)
         } else if family == .systemSmall {
             VStack(alignment: horizontal, spacing: 8) {
-                dateLine
-                row(visible[0])
+                dateLine(fontSize: fontSize)
+                row(visible[0], fontSize: fontSize)
             }
             .widgetURL(LaunchRouter.widgetURL(for: visible[0]))
+        } else if family == .systemExtraLarge {
+            // iPad's extra-large is twice as wide as large but no taller, so the
+            // names grow to fill the height: a short list gets very large type.
+            GeometryReader { geo in
+                let size = extraLargeFontSize(height: geo.size.height)
+                list(fontSize: size, spacing: size * 0.4)
+                    .frame(width: geo.size.width, height: geo.size.height, alignment: frameAlignment)
+            }
         } else {
-            VStack(alignment: horizontal, spacing: rowSpacing) {
-                dateLine
-                ForEach(visible) { item in
-                    Link(destination: LaunchRouter.widgetURL(for: item)) { row(item) }
-                }
+            list(fontSize: fontSize, spacing: rowSpacing)
+        }
+    }
+
+    private func list(fontSize: CGFloat, spacing: CGFloat) -> some View {
+        VStack(alignment: horizontal, spacing: spacing) {
+            dateLine(fontSize: fontSize)
+            ForEach(visible) { item in
+                Link(destination: LaunchRouter.widgetURL(for: item)) { row(item, fontSize: fontSize) }
             }
         }
     }
 
-    @ViewBuilder private var dateLine: some View {
+    /// The largest size at which every row fits the height (a row is about
+    /// 1.6 × the font size with its spacing), between the chosen text size and
+    /// 1.8 × that.
+    private func extraLargeFontSize(height: CGFloat) -> CGFloat {
+        let rows = CGFloat(visible.count) + (settings.showDate ? 1.2 : 0)
+        let fitting = height / (max(rows, 1) * 1.6)
+        return min(fontSize * 1.8, max(fontSize, fitting))
+    }
+
+    @ViewBuilder private func dateLine(fontSize: CGFloat) -> some View {
         if settings.showDate {
             Text(entry.date, format: family == .systemSmall
                  ? .dateTime.weekday(.abbreviated).day().month(.abbreviated)
                  : .dateTime.weekday(.wide).day().month(.wide))
-                .font(Typography.font(settings.fontStyle, size: dateFontSize, weight: .medium))
+                .font(Typography.font(settings.fontStyle, size: family == .systemSmall ? 14 : fontSize * 0.7, weight: .medium))
                 .foregroundStyle(foreground)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
                 .widgetAccentable()
-                .padding(.bottom, family == .systemLarge ? 10 : 4)
+                .padding(.bottom, isLarge ? 10 : 4)
         }
     }
 
-    private func row(_ item: LauncherItem) -> some View {
+    private func row(_ item: LauncherItem, fontSize: CGFloat) -> some View {
         Text(settings.displayName(item.name))
             .font(Typography.font(settings.fontStyle, size: fontSize, weight: nameWeight))
             .foregroundStyle(foreground)
@@ -140,21 +163,17 @@ struct LauncherWidgetView: View {
     /// Light in the system font; the brand font's lightest weight is Regular.
     private var nameWeight: Font.Weight { settings.fontStyle == .system ? .light : .regular }
 
-    /// The date sits a step below the app names: clearly a heading, not an item.
-    private var dateFontSize: CGFloat {
-        family == .systemSmall ? 14 : fontSize * 0.7
-    }
 
     /// Spacing chosen so WidgetCapacity's row counts fit each family with room
     /// to spare (large is roughly twice the height of medium).
     private var rowSpacing: CGFloat {
-        switch (family, settings.textSize) {
-        case (.systemLarge, .small): 8
-        case (.systemLarge, .medium): 10
-        case (.systemLarge, .large): 13
-        case (_, .small): 5
-        case (_, .medium): 4
-        case (_, .large): 7
+        switch (isLarge, settings.textSize) {
+        case (true, .small): 8
+        case (true, .medium): 10
+        case (true, .large): 13
+        case (false, .small): 5
+        case (false, .medium): 4
+        case (false, .large): 7
         }
     }
 
@@ -188,7 +207,7 @@ struct LauncherWidget: Widget {
         }
         .configurationDisplayName(Bundle.main.displayName)
         .description("Your apps as a plain text list. Tap a name to open it.")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge, .systemExtraLarge])
         .contentMarginsDisabled()
     }
 }

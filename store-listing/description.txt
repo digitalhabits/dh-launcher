@@ -1,4 +1,4 @@
-Get back to the thing you picked up your phone for. Digital Habits: Launcher replaces the grid of colourful icons with a short list of words, so opening an app is a choice, not a reflex:
+Get back to the thing you picked up your phone for. DH Launcher replaces the grid of colourful icons with a short list of words, so opening an app is a choice, not a reflex:
 
 - A calm home screen: a black widget with only the apps you choose, as plain words
 - Pick your apps in seconds: tick the ones you want from a list of common apps
@@ -9,7 +9,8 @@ Get back to the thing you picked up your phone for. Digital Habits: Launcher rep
 
 iOS does not let apps replace the home screen. So when you tap a name, DH Launcher opens for a moment and then opens your app. You will see a short black flash.
 
-The app collects no data at all. Your list stays on your iPhone, and the app makes no network requests.
+The source code of DH Launcher is public, and the app collects no data at all. Your list stays on your iPhone, and the app makes no network requests.
+Source code: https://github.com/digitalhabits/dh-launcher
 
 Cheers,
 
