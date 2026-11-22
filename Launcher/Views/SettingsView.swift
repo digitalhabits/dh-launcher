@@ -29,11 +29,6 @@ struct SettingsView: View {
                 Toggle("Lowercase names", isOn: binding(\.lowercaseNames, s.lowercaseNames))
                 Toggle("Show date in widget", isOn: binding(\.showDate, s.showDate))
             }
-            Section {
-                Toggle("Open single search match", isOn: binding(\.autoLaunchSingleMatch, s.autoLaunchSingleMatch))
-            } footer: {
-                Text("When your search leaves exactly one app, open it without tapping.")
-            }
             Section("Help") {
                 NavigationLink("Make the widget your home screen") { SetupGuideView() }
                 NavigationLink("How to add an app via Shortcut") { ShortcutGuideView(appName: "", onSave: nil) }

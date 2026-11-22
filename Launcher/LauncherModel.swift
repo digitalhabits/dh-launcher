@@ -22,8 +22,6 @@ final class LauncherModel {
     var phase: Phase = .drawer
     /// The sheet shown over the drawer, if any.
     var sheet: Sheet?
-    /// Incremented whenever the drawer should reset (clear search, refocus).
-    private(set) var drawerResetToken = 0
 
     private let store: LauncherStore
 
@@ -104,7 +102,6 @@ final class LauncherModel {
 
     func showDrawer() {
         phase = .drawer
-        drawerResetToken &+= 1
     }
 
     /// From the failure screen: back to the drawer with a sheet open.
@@ -125,6 +122,12 @@ final class LauncherModel {
         persistItems()
     }
 
+    func add(contentsOf newItems: [LauncherItem]) {
+        guard !newItems.isEmpty else { return }
+        items.append(contentsOf: newItems)
+        persistItems()
+    }
+
     func update(_ item: LauncherItem) {
         guard let i = items.firstIndex(where: { $0.id == item.id }) else { return }
         items[i] = item
@@ -141,11 +144,6 @@ final class LauncherModel {
         persistItems()
     }
 
-    func toggleHomeScreen(id: UUID) {
-        guard let i = items.firstIndex(where: { $0.id == id }) else { return }
-        items[i].onHomeScreen.toggle()
-        persistItems()
-    }
 
     func updateSettings(_ change: (inout LauncherSettings) -> Void) {
         change(&settings)

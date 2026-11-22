@@ -6,7 +6,8 @@ public struct LauncherItem: Codable, Identifiable, Hashable, Sendable {
     /// Text shown in the widget and the drawer.
     public var name: String
     public var target: LaunchTarget
-    /// Shown in the widget (true) or drawer-only (false).
+    /// Legacy: from 0.1 every item is on the widget. Kept so lists saved by
+    /// earlier builds still decode; `LauncherItem.normalised` sets it to true.
     public var onHomeScreen: Bool
 
     public init(id: UUID = UUID(), name: String, target: LaunchTarget, onHomeScreen: Bool = true) {
@@ -14,6 +15,16 @@ public struct LauncherItem: Codable, Identifiable, Hashable, Sendable {
         self.name = name
         self.target = target
         self.onHomeScreen = onHomeScreen
+    }
+}
+
+extension LauncherItem {
+    /// Lists from builds that let an item be "off the widget": those items move
+    /// to the end, in their order, and every item counts as on the widget.
+    public static func normalised(_ items: [LauncherItem]) -> [LauncherItem] {
+        let on = items.filter(\.onHomeScreen)
+        let off = items.filter { !$0.onHomeScreen }
+        return (on + off).map { var item = $0; item.onHomeScreen = true; return item }
     }
 }
 
@@ -40,23 +51,19 @@ public struct LauncherSettings: Codable, Hashable, Sendable {
     public var fontStyle: FontStyle
     /// Show item names in lowercase (Olauncher style). Stored names keep their case.
     public var lowercaseNames: Bool
-    /// Launch automatically when a drawer search leaves exactly one match.
-    public var autoLaunchSingleMatch: Bool
 
     public init(alignment: Alignment = .center,
                 textSize: TextSize = .medium,
                 showDate: Bool = false,
                 theme: Theme = .black,
                 fontStyle: FontStyle = .brand,
-                lowercaseNames: Bool = true,
-                autoLaunchSingleMatch: Bool = true) {
+                lowercaseNames: Bool = true) {
         self.alignment = alignment
         self.textSize = textSize
         self.showDate = showDate
         self.theme = theme
         self.fontStyle = fontStyle
         self.lowercaseNames = lowercaseNames
-        self.autoLaunchSingleMatch = autoLaunchSingleMatch
     }
 
     public static let `default` = LauncherSettings()
@@ -77,7 +84,6 @@ public struct LauncherSettings: Codable, Hashable, Sendable {
         theme = (try? c.decodeIfPresent(Theme.self, forKey: .theme)) ?? d.theme
         fontStyle = (try? c.decodeIfPresent(FontStyle.self, forKey: .fontStyle)) ?? d.fontStyle
         lowercaseNames = (try? c.decodeIfPresent(Bool.self, forKey: .lowercaseNames)) ?? d.lowercaseNames
-        autoLaunchSingleMatch = (try? c.decodeIfPresent(Bool.self, forKey: .autoLaunchSingleMatch)) ?? d.autoLaunchSingleMatch
     }
 }
 
@@ -103,9 +109,19 @@ public enum WidgetCapacity {
         return showDate ? max(1, base - 1) : base
     }
 
+    /// Whether the item at this 0-based position shows on a widget of this size.
+    public static func fits(position: Int, size: WidgetSize, settings: LauncherSettings) -> Bool {
+        position < maxItems(for: size, textSize: settings.textSize, showDate: settings.showDate)
+    }
+
+    /// How many more items fit on a widget of this size.
+    public static func slotsLeft(_ items: [LauncherItem], size: WidgetSize, settings: LauncherSettings) -> Int {
+        max(0, maxItems(for: size, textSize: settings.textSize, showDate: settings.showDate) - items.count)
+    }
+
     /// The items the widget shows, in order, truncated to capacity.
     public static func visibleItems(_ items: [LauncherItem], size: WidgetSize, settings: LauncherSettings) -> [LauncherItem] {
         let max = maxItems(for: size, textSize: settings.textSize, showDate: settings.showDate)
-        return Array(items.filter(\.onHomeScreen).prefix(max))
+        return Array(items.prefix(max))
     }
 }

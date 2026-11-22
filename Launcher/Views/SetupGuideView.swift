@@ -19,7 +19,7 @@ struct SetupGuideView: View {
                     PhoneSketch { WidgetSketch(rows: 7) }
                 }
                 GuideStep(n: 3, title: "Move other apps to the App Library",
-                          text: "Touch and hold each app icon, tap Remove App › Remove from Home Screen. The app stays installed and is still in the App Library and in \(name)'s list.") {
+                          text: "Touch and hold each app icon, tap Remove App › Remove from Home Screen. The app stays installed. You can still open it from the App Library, or with Search on the home screen.") {
                     PhoneSketch { WidgetSketch(rows: 7) }
                 }
                 GuideStep(n: 4, title: "Remove extra pages",
@@ -27,7 +27,7 @@ struct SetupGuideView: View {
                     PhoneSketch { WidgetSketch(rows: 7) }
                 }
                 GuideStep(n: 5, title: "Keep the drawer one tap away",
-                          text: "Put \(name) in the dock (or leave it as the only icon). Opening it shows every app you've added, with search ready.") {
+                          text: "Put \(name) in the dock as the only icon. Open it to change which apps are on the widget. For any other app, tap Search on the home screen.") {
                     PhoneSketch(dockIcon: true) { WidgetSketch(rows: 7) }
                 }
             }

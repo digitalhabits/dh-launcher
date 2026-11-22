@@ -47,6 +47,10 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         AppGroupIdentifier: group.$(BUNDLE_PREFIX)
+        # No encryption beyond what iOS itself provides (the app makes no network requests),
+        # so App Store Connect skips the export-compliance question on each upload.
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.productivity
         UILaunchScreen:
           UIColorName: LaunchBackground
         UISupportedInterfaceOrientations:

@@ -6,11 +6,11 @@ struct AddItemView: View {
     var body: some View {
         List {
             Section {
-                NavigationLink("From catalog") { CatalogPickerView() }
+                NavigationLink("Pick from common apps") { CatalogPickerView() }
                 NavigationLink("Via Shortcut (any app)") { ShortcutAddView() }
                 NavigationLink("Custom URL or link") { CustomAddView() }
             } footer: {
-                Text("iOS doesn't let apps see what's installed, so you build your own list. The catalog knows URL schemes for common apps; a Shortcut works for any app.")
+                Text("iOS doesn't let apps see what's installed, so you choose the apps for your list. Common apps open with a link; a Shortcut works for any app.")
             }
         }
         .navigationTitle("Add app")
@@ -19,36 +19,58 @@ struct AddItemView: View {
     }
 }
 
+/// Tick any number of common apps and add them in one go.
 struct CatalogPickerView: View {
     @Environment(LauncherModel.self) private var model
-    @Environment(\.dismiss) private var dismiss
     @State private var query = ""
+    @State private var picked: Set<CatalogEntry> = []
     private let catalog = AppCatalog.bundled()
 
     var body: some View {
+        let added = Set(model.items.compactMap { item -> String? in
+            if case .urlScheme(let scheme) = item.target { return scheme.lowercased() }
+            return nil
+        })
         List {
             ForEach(AppCatalog.search(catalog, query: query)) { entry in
+                let isAdded = added.contains(entry.scheme.lowercased())
                 Button {
-                    model.add(LauncherItem(name: entry.name, target: .urlScheme(entry.scheme)))
-                    model.sheet = nil
+                    if picked.contains(entry) { picked.remove(entry) } else { picked.insert(entry) }
                 } label: {
                     HStack {
-                        Text(entry.name).foregroundStyle(.primary)
+                        Image(systemName: isAdded || picked.contains(entry) ? "checkmark.circle.fill" : "circle")
+                            .foregroundStyle(isAdded ? Color.secondary : (picked.contains(entry) ? Color.accentColor : Color.secondary))
+                        Text(entry.name).foregroundStyle(isAdded ? .secondary : .primary)
                         Spacer()
-                        Text(entry.scheme).font(.footnote.monospaced()).foregroundStyle(.secondary)
+                        if isAdded { Text("added").font(.footnote).foregroundStyle(.secondary) }
                     }
                 }
+                .disabled(isAdded)
                 .accessibilityIdentifier("catalog.\(entry.name)")
             }
-        } 
+        }
         .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always))
-        .navigationTitle("Catalog")
+        .navigationTitle("Pick apps")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button(picked.isEmpty ? "Add" : "Add \(picked.count)") { addPicked() }
+                    .disabled(picked.isEmpty)
+                    .accessibilityIdentifier("catalog.add")
+            }
+        }
         .safeAreaInset(edge: .bottom) {
-            Text("Schemes are community-maintained and may be out of date. If an app doesn't open, add it via Shortcut instead.")
+            Text("New apps go at the end of your widget. If an app doesn't open, add it with a Shortcut instead: this list's links come from the community and may be out of date.")
                 .font(.footnote).foregroundStyle(.secondary)
                 .padding().frame(maxWidth: .infinity).background(.bar)
         }
+    }
+
+    private func addPicked() {
+        let entries = catalog.filter { picked.contains($0) } // catalog order (A–Z)
+        let items = entries.map { LauncherItem(name: $0.name, target: .urlScheme($0.scheme)) }
+        model.add(contentsOf: items)
+        model.sheet = nil
     }
 }
 

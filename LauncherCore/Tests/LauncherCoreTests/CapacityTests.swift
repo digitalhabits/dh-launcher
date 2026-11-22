@@ -17,11 +17,42 @@ struct CapacityTests {
         }
     }
 
-    @Test func visibleItemsFiltersAndTruncates() {
-        let items = (0..<12).map { LauncherItem(name: "\($0)", target: .urlScheme("x://"), onHomeScreen: $0 != 1) }
+    @Test func visibleItemsTruncatesInOrder() {
+        let items = (0..<12).map { LauncherItem(name: "\($0)", target: .urlScheme("x://")) }
         let s = LauncherSettings(textSize: .medium, showDate: false)
-        let medium = WidgetCapacity.visibleItems(items, size: .medium, settings: s)
-        #expect(medium.map(\.name) == ["0", "2", "3", "4"])
+        #expect(WidgetCapacity.visibleItems(items, size: .medium, settings: s).map(\.name) == ["0", "1", "2", "3"])
         #expect(WidgetCapacity.visibleItems(items, size: .small, settings: s).map(\.name) == ["0"])
+        #expect(WidgetCapacity.fits(position: 3, size: .medium, settings: s))
+        #expect(!WidgetCapacity.fits(position: 4, size: .medium, settings: s))
+    }
+}
+
+struct SlotsLeftTests {
+    @Test func countsAllItems() {
+        let s = LauncherSettings(textSize: .medium, showDate: false)
+        let items = (0..<3).map { LauncherItem(name: "\($0)", target: .urlScheme("x://")) }
+        #expect(WidgetCapacity.slotsLeft(items, size: .large, settings: s) == 5)
+        #expect(WidgetCapacity.slotsLeft(items, size: .medium, settings: s) == 1)
+        #expect(WidgetCapacity.slotsLeft(items, size: .small, settings: s) == 0)
+    }
+}
+
+struct NormalisedTests {
+    @Test func offWidgetItemsMoveToTheEndAndCountAsOn() {
+        let a = LauncherItem(name: "a", target: .urlScheme("x://"))
+        let b = LauncherItem(name: "b", target: .urlScheme("x://"), onHomeScreen: false)
+        let c = LauncherItem(name: "c", target: .urlScheme("x://"))
+        let d = LauncherItem(name: "d", target: .urlScheme("x://"), onHomeScreen: false)
+        let result = LauncherItem.normalised([a, b, c, d])
+        #expect(result.map(\.name) == ["a", "c", "b", "d"])
+        #expect(result.allSatisfy { $0.onHomeScreen })
+    }
+
+    @Test func storeNormalisesOnLoad() {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("norm-\(UUID().uuidString)")
+        let store = LauncherStore(directory: dir)
+        store.saveItems([LauncherItem(name: "off", target: .urlScheme("x://"), onHomeScreen: false),
+                         LauncherItem(name: "on", target: .urlScheme("x://"))])
+        #expect(store.loadItems().map(\.name) == ["on", "off"])
     }
 }

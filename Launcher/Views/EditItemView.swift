@@ -62,10 +62,7 @@ struct EditItemView: View {
                 if target == nil { Text("Enter a valid \(kind.rawValue.lowercased()).").foregroundStyle(.red) }
             }
             Section {
-                Toggle("Show on home screen", isOn: $draft.onHomeScreen)
-            }
-            Section {
-                Button("Delete", role: .destructive) { confirmDelete = true }
+                Button("Remove from widget", role: .destructive) { confirmDelete = true }
             }
         }
         .navigationTitle("Edit")
@@ -86,11 +83,13 @@ struct EditItemView: View {
                 .accessibilityIdentifier("edit.save")
             }
         }
-        .confirmationDialog("Delete \(draft.name)?", isPresented: $confirmDelete, titleVisibility: .visible) {
-            Button("Delete", role: .destructive) {
+        .confirmationDialog("Remove \(draft.name)?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Remove", role: .destructive) {
                 model.delete(id: draft.id)
                 model.sheet = nil
             }
+        } message: {
+            Text("It leaves your widget. The app itself stays on your iPhone.")
         }
     }
 

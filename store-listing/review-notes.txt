@@ -1,0 +1,19 @@
+Thank you for reviewing Digital Habits: Launcher.
+
+What the app does
+The app is a home-screen widget plus the list of apps behind it. The user adds the apps they want (from a built-in list of URL schemes, or with a one-action Shortcut). Tapping a name in the widget or in the app opens that app.
+
+How to test
+1. Open the app. It starts with Messages, Phone, Maps and Calendar. Tap "maps": Maps opens.
+2. Tap "add app" > "Pick from common apps", tick a few apps and tap "Add".
+3. Go to the home screen, touch and hold, tap Edit > Add Widget, search for "DH Launcher", choose the large size and add it.
+4. Tap "maps" in the widget. Maps opens.
+
+Why a short black screen shows
+A widget can only open its own app (WidgetKit Link and widgetURL). So a tap opens our app, which shows a plain black screen and at once calls UIApplication.open with the URL of the chosen app. This is the documented way for widgets to start actions.
+
+Shortcuts
+For apps with no URL scheme, the app tells the user how to make a Shortcut with the "Open App" action and opens it with shortcuts://run-shortcut?name=... The app does not make or change Shortcuts itself.
+
+Privacy
+The app collects no data and makes no network requests. Item names and settings are stored in the app's App Group container on the device. The app does not list installed apps and does not use canOpenURL.

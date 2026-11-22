@@ -8,7 +8,7 @@ SwiftUI/WidgetKit app; no Olauncher code is used.
 
 <p>
   <img src="docs/screenshots/widget-large.png" width="300" alt="Large widget: a plain text list of app names on black">
-  <img src="docs/screenshots/drawer.png" width="180" alt="The app drawer: a search field and a list of app names on black">
+  <img src="docs/screenshots/drawer.png" width="180" alt="The app: your list of app names on black">
 </p>
 <p>
   <img src="docs/screenshots/widget-medium.png" width="300" alt="Medium widget: four app names on black">
@@ -18,9 +18,13 @@ SwiftUI/WidgetKit app; no Olauncher code is used.
 
 - **A home-screen widget** (small, medium, large) showing a plain list of app
   names on black (or white). Tap a name to open that app.
-- **An app drawer**: open DH Launcher and every app you've added is listed as
-  text, with search ready. If your typing narrows the list to one app, it opens
-  (Olauncher behaviour; can be switched off).
+- **Your list is the widget**: open DH Launcher to see, add, edit, remove and
+  reorder the widget's apps. Add many at once from a list of common apps, or
+  any app with a one-step Shortcut. Apps beyond what the widget can hold are
+  marked "doesn't fit".
+- **No search of its own**: iOS doesn't tell apps what is installed, so a
+  search in DH Launcher could only find apps you added by hand. For everything
+  else, use iOS's own Search (on the home screen) and the App Library.
 - **Guides** for making the widget your whole home screen and for adding any
   app through a Shortcut.
 
@@ -80,7 +84,7 @@ from the prefix (`group.<prefix>`) and must be registered for your team.
 | Path | What |
 |---|---|
 | `project.yml` | XcodeGen spec: targets, App Group, URL scheme, placeholders |
-| `Launcher/` | The app: drawer, add/edit, home-screen list, settings, guides, launch forwarding |
+| `Launcher/` | The app: your list, add/edit, home-screen list, settings, guides, launch forwarding |
 | `LauncherWidget/` | The WidgetKit extension |
 | `LauncherCore/` | Swift package with all testable logic: models, JSON store, URL router, widget capacity, catalog |
 | `LauncherCore/Sources/LauncherCore/Resources/catalog.json` | Known apps and their URL schemes |
@@ -88,7 +92,7 @@ from the prefix (`group.<prefix>`) and must be registered for your team.
 How a widget tap works: the widget row links to `dhlauncher://open?id=<uuid>`;
 the app looks the item up in the shared App Group store, shows a plain black
 screen and calls `UIApplication.open` on the item's real URL. When you come
-back to the app later, it shows the drawer.
+back to the app later, it shows your list.
 
 ## Contributing catalog entries
 
@@ -110,6 +114,12 @@ Currently verified (on the iOS 26.5 simulator): Calendar, Files, Fitness,
 Health, Maps, Messages, News, Photos, Reminders, Safari, Shortcuts, Wallet.
 Every third-party scheme, and Apple apps not present on the simulator (App
 Store, Books, Music, Notes and others), are unverified.
+
+## App Store
+
+Store text, pictures, the App Preview video, App Review notes and a draft
+privacy policy are in `store-listing/`. See `store-listing/SUBMISSION.md` for
+what is ready and what the owner still has to do.
 
 ## Font
 

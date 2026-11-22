@@ -30,7 +30,7 @@ public struct LauncherStore: Sendable {
     // MARK: Items
 
     public func loadItems() -> [LauncherItem] {
-        load([LauncherItem].self, from: Self.itemsFile) ?? []
+        LauncherItem.normalised(load([LauncherItem].self, from: Self.itemsFile) ?? [])
     }
 
     @discardableResult

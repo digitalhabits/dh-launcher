@@ -1,0 +1,17 @@
+Get back to the thing you picked up your phone for. Digital Habits: Launcher replaces the grid of colourful icons with a short list of words, so opening an app is a choice, not a reflex:
+
+- A calm home screen: a black widget with only the apps you choose, as plain words
+- Pick your apps in seconds: tick the ones you want from a list of common apps
+- Everything else stays one swipe away: use iOS Search or the App Library for the apps you didn't add
+- Works with every app: apps with a link open directly, and for the others the app shows you how to make a one-step Shortcut
+- Make it yours: font, text size, alignment, lowercase names, a black or white theme, and the date if you want it
+- Set up in minutes: the app shows you how to make the widget your whole home screen
+
+iOS does not let apps replace the home screen. So when you tap a name, DH Launcher opens for a moment and then opens your app. You will see a short black flash.
+
+The app collects no data at all. Your list stays on your iPhone, and the app makes no network requests.
+
+Cheers,
+
+Ulrik, Tiago, and the Centre for Digital Habits Team
+(digitalhabits.org)

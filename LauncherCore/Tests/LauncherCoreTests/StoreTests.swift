@@ -29,7 +29,7 @@ struct StoreTests {
     @Test func itemsRoundTripPreservingOrderAndAllTargetKinds() {
         let items = [
             LauncherItem(name: "Maps", target: .urlScheme("maps://")),
-            LauncherItem(name: "Spotify", target: .shortcut(name: "Open Spotify"), onHomeScreen: false),
+            LauncherItem(name: "Spotify", target: .shortcut(name: "Open Spotify")),
             LauncherItem(name: "Docs", target: .web(URL(string: "https://example.com/a?b=c")!)),
         ]
         #expect(store.saveItems(items))
@@ -39,7 +39,7 @@ struct StoreTests {
     }
 
     @Test func settingsRoundTrip() {
-        let s = LauncherSettings(alignment: .trailing, textSize: .large, showDate: true, theme: .white, autoLaunchSingleMatch: false)
+        let s = LauncherSettings(alignment: .trailing, textSize: .large, showDate: true, theme: .white, fontStyle: .system, lowercaseNames: false)
         #expect(store.saveSettings(s))
         #expect(store.loadSettings() == s)
     }
@@ -64,7 +64,7 @@ struct StoreTests {
         let s = store.loadSettings()
         #expect(s.theme == .white)
         #expect(s.textSize == LauncherSettings.default.textSize)
-        #expect(s.autoLaunchSingleMatch == true)
+        #expect(s.lowercaseNames == true)
     }
 
     @Test func hasSavedItemsDistinguishesEmptyFromNeverSaved() {
