@@ -16,6 +16,15 @@ struct StoreTests {
         #expect(store.loadSettings() == .default)
     }
 
+    @Test func defaultsAreCentredWithoutDate() throws {
+        #expect(LauncherSettings.default.showDate == false)
+        #expect(LauncherSettings.default.alignment == .center)
+        // A settings file without the key (older or hand-written) also gets the default.
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        try Data(#"{"theme":"black"}"#.utf8).write(to: dir.appendingPathComponent(LauncherStore.settingsFile))
+        #expect(store.loadSettings().showDate == false)
+    }
+
     @Test func itemsRoundTripPreservingOrderAndAllTargetKinds() {
         let items = [
             LauncherItem(name: "Maps", target: .urlScheme("maps://")),
@@ -29,7 +38,7 @@ struct StoreTests {
     }
 
     @Test func settingsRoundTrip() {
-        let s = LauncherSettings(alignment: .trailing, textSize: .large, showDate: false, theme: .white, autoLaunchSingleMatch: false)
+        let s = LauncherSettings(alignment: .trailing, textSize: .large, showDate: true, theme: .white, autoLaunchSingleMatch: false)
         #expect(store.saveSettings(s))
         #expect(store.loadSettings() == s)
     }

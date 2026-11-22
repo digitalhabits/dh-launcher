@@ -83,7 +83,6 @@ struct LauncherWidgetView: View {
         } else if family == .systemSmall {
             VStack(alignment: horizontal, spacing: 8) {
                 dateLine
-                Spacer(minLength: 0)
                 row(visible[0])
             }
             .widgetURL(LaunchRouter.widgetURL(for: visible[0]))
@@ -93,7 +92,6 @@ struct LauncherWidgetView: View {
                 ForEach(visible) { item in
                     Link(destination: LaunchRouter.widgetURL(for: item)) { row(item) }
                 }
-                Spacer(minLength: 0)
             }
         }
     }
@@ -154,8 +152,10 @@ struct LauncherWidgetView: View {
     private var horizontal: HorizontalAlignment {
         switch settings.alignment { case .leading: .leading; case .center: .center; case .trailing: .trailing }
     }
+    /// The list is always centred vertically in the widget; the setting only
+    /// controls the horizontal position.
     private var frameAlignment: Alignment {
-        switch settings.alignment { case .leading: .topLeading; case .center: .top; case .trailing: .topTrailing }
+        switch settings.alignment { case .leading: .leading; case .center: .center; case .trailing: .trailing }
     }
     private var textAlignment: TextAlignment {
         switch settings.alignment { case .leading: .leading; case .center: .center; case .trailing: .trailing }

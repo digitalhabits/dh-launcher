@@ -7,11 +7,11 @@ A free, open-source, minimal text launcher for iPhone, inspired by
 SwiftUI/WidgetKit app; no Olauncher code is used.
 
 <p>
-  <img src="docs/screenshots/widget-large.png" width="300" alt="Large widget: a date line and a plain text list of app names on black">
+  <img src="docs/screenshots/widget-large.png" width="300" alt="Large widget: a plain text list of app names on black">
   <img src="docs/screenshots/drawer.png" width="180" alt="The app drawer: a search field and a list of app names on black">
 </p>
 <p>
-  <img src="docs/screenshots/widget-medium.png" width="300" alt="Medium widget: a date line and three app names on black">
+  <img src="docs/screenshots/widget-medium.png" width="300" alt="Medium widget: four app names on black">
 </p>
 
 ## What it is

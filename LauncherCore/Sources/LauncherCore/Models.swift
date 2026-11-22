@@ -38,9 +38,9 @@ public struct LauncherSettings: Codable, Hashable, Sendable {
     /// Launch automatically when a drawer search leaves exactly one match.
     public var autoLaunchSingleMatch: Bool
 
-    public init(alignment: Alignment = .leading,
+    public init(alignment: Alignment = .center,
                 textSize: TextSize = .medium,
-                showDate: Bool = true,
+                showDate: Bool = false,
                 theme: Theme = .black,
                 autoLaunchSingleMatch: Bool = true) {
         self.alignment = alignment
