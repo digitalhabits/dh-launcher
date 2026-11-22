@@ -31,7 +31,7 @@ Home-screen swipe gestures, double-tap to lock, setting the wallpaper, auto-disc
 ## 2. Environment and project setup
 
 - Xcode 26.6 is installed, with an iPhone 17 Pro simulator on iOS 26.5. `xcodegen` is at `/opt/homebrew/bin/xcodegen`.
-- Project lives in this folder: `/Users/ulyngs/digital-habits-tools/dh-launcher/`.
+- Project lives in this repository (`dh-launcher/`).
 - **Generate the Xcode project with XcodeGen** from a `project.yml`. Do not hand-write `project.pbxproj`. Add `*.xcodeproj` to `.gitignore`.
 - Deployment target: **iOS 18.0**. Swift 6 language mode, iPhone only, portrait only.
 - No third-party dependencies.
