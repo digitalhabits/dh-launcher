@@ -18,10 +18,15 @@ struct SettingsView: View {
                     Text("Medium").tag(LauncherSettings.TextSize.medium)
                     Text("Large").tag(LauncherSettings.TextSize.large)
                 }
+                Picker("Font", selection: binding(\.fontStyle, s.fontStyle)) {
+                    Text("Schibsted Grotesk").tag(LauncherSettings.FontStyle.brand)
+                    Text("System").tag(LauncherSettings.FontStyle.system)
+                }
                 Picker("Theme", selection: binding(\.theme, s.theme)) {
                     Text("Black").tag(LauncherSettings.Theme.black)
                     Text("White").tag(LauncherSettings.Theme.white)
                 }
+                Toggle("Lowercase names", isOn: binding(\.lowercaseNames, s.lowercaseNames))
                 Toggle("Show date in widget", isOn: binding(\.showDate, s.showDate))
             }
             Section {

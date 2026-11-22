@@ -111,6 +111,14 @@ Health, Maps, Messages, News, Photos, Reminders, Safari, Shortcuts, Wallet.
 Every third-party scheme, and Apple apps not present on the simulator (App
 Store, Books, Music, Notes and others), are unverified.
 
+## Font
+
+The default font is Schibsted Grotesk, the font of the Digital Habits website
+(Settings › Font switches to the iOS system font). It ships in
+`LauncherCore/Sources/LauncherCore/Resources/Fonts/` under the SIL Open Font
+Licence 1.1 (`SchibstedGrotesk-OFL.txt` next to it), taken unmodified from
+[google/fonts](https://github.com/google/fonts/tree/main/ofl/schibstedgrotesk).
+
 ## Not yet done
 
 See section 8 of `PLAN.md`: skipping the host-app bounce for universal links,

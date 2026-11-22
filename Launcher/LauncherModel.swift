@@ -37,15 +37,16 @@ final class LauncherModel {
         }
     }
 
-    /// Apple apps present on every iPhone, so a fresh install is not empty.
-    /// All five schemes were confirmed to open on the iOS 26.5 simulator.
+    /// What a fresh install starts with: the four apps most people need from
+    /// the home screen. Messages, Maps and Calendar were confirmed to open on the
+    /// iOS 26.5 simulator; the simulator has no Phone app, so `mobilephone://`
+    /// is unverified there.
     static var starterItems: [LauncherItem] {
         [
             LauncherItem(name: "Messages", target: .urlScheme("sms:")),
-            LauncherItem(name: "Calendar", target: .urlScheme("calshow://")),
+            LauncherItem(name: "Phone", target: .urlScheme("mobilephone://")),
             LauncherItem(name: "Maps", target: .urlScheme("maps://")),
-            LauncherItem(name: "Photos", target: .urlScheme("photos-redirect://")),
-            LauncherItem(name: "Shortcuts", target: .urlScheme("shortcuts://")),
+            LauncherItem(name: "Calendar", target: .urlScheme("calshow://")),
         ]
     }
 

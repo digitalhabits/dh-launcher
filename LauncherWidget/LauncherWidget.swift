@@ -66,7 +66,6 @@ struct LauncherWidgetView: View {
         WidgetCapacity.visibleItems(entry.items, size: size, settings: settings)
     }
     private var foreground: Color { settings.theme == .black ? .white : .black }
-    private var secondary: Color { settings.theme == .black ? Color(white: 0.6) : Color(white: 0.4) }
 
     var body: some View {
         content
@@ -101,16 +100,18 @@ struct LauncherWidgetView: View {
             Text(entry.date, format: family == .systemSmall
                  ? .dateTime.weekday(.abbreviated).day().month(.abbreviated)
                  : .dateTime.weekday(.wide).day().month(.wide))
-                .font(.system(size: 13, weight: .regular))
-                .foregroundStyle(secondary)
-                .widgetAccentable(false)
-                .padding(.bottom, 2)
+                .font(Typography.font(settings.fontStyle, size: dateFontSize, weight: .medium))
+                .foregroundStyle(foreground)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .widgetAccentable()
+                .padding(.bottom, family == .systemLarge ? 10 : 4)
         }
     }
 
     private func row(_ item: LauncherItem) -> some View {
-        Text(item.name)
-            .font(.system(size: fontSize, weight: .light))
+        Text(settings.displayName(item.name))
+            .font(Typography.font(settings.fontStyle, size: fontSize, weight: nameWeight))
             .foregroundStyle(foreground)
             .lineLimit(1)
             .minimumScaleFactor(0.7)
@@ -120,7 +121,7 @@ struct LauncherWidgetView: View {
 
     private var emptyState: some View {
         Text("Open \(Bundle.main.displayName) to add apps")
-            .font(.system(size: 17, weight: .light))
+            .font(Typography.font(settings.fontStyle, size: 17, weight: nameWeight))
             .foregroundStyle(foreground)
             .multilineTextAlignment(textAlignment)
             .widgetAccentable()
@@ -130,22 +131,30 @@ struct LauncherWidgetView: View {
 
     private var fontSize: CGFloat {
         switch settings.textSize {
-        case .small: 17
-        case .medium: 22
-        case .large: 27
+        case .small: 18
+        case .medium: 26
+        case .large: 29
         }
+    }
+
+    /// Light in the system font; the brand font's lightest weight is Regular.
+    private var nameWeight: Font.Weight { settings.fontStyle == .system ? .light : .regular }
+
+    /// The date sits a step below the app names: clearly a heading, not an item.
+    private var dateFontSize: CGFloat {
+        family == .systemSmall ? 14 : fontSize * 0.7
     }
 
     /// Spacing chosen so WidgetCapacity's row counts fit each family with room
     /// to spare (large is roughly twice the height of medium).
     private var rowSpacing: CGFloat {
         switch (family, settings.textSize) {
-        case (.systemLarge, .small): 9
-        case (.systemLarge, .medium): 14
-        case (.systemLarge, .large): 14
-        case (_, .small): 6
-        case (_, .medium): 8
-        case (_, .large): 9
+        case (.systemLarge, .small): 8
+        case (.systemLarge, .medium): 10
+        case (.systemLarge, .large): 13
+        case (_, .small): 5
+        case (_, .medium): 4
+        case (_, .large): 7
         }
     }
 

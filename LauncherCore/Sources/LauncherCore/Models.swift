@@ -30,11 +30,16 @@ public struct LauncherSettings: Codable, Hashable, Sendable {
     public enum Alignment: String, Codable, CaseIterable, Sendable { case leading, center, trailing }
     public enum TextSize: String, Codable, CaseIterable, Sendable { case small, medium, large }
     public enum Theme: String, Codable, CaseIterable, Sendable { case black, white }
+    /// `brand` is Schibsted Grotesk, the Digital Habits website font; `system` is San Francisco.
+    public enum FontStyle: String, Codable, CaseIterable, Sendable { case brand, system }
 
     public var alignment: Alignment
     public var textSize: TextSize
     public var showDate: Bool
     public var theme: Theme
+    public var fontStyle: FontStyle
+    /// Show item names in lowercase (Olauncher style). Stored names keep their case.
+    public var lowercaseNames: Bool
     /// Launch automatically when a drawer search leaves exactly one match.
     public var autoLaunchSingleMatch: Bool
 
@@ -42,15 +47,24 @@ public struct LauncherSettings: Codable, Hashable, Sendable {
                 textSize: TextSize = .medium,
                 showDate: Bool = false,
                 theme: Theme = .black,
+                fontStyle: FontStyle = .brand,
+                lowercaseNames: Bool = true,
                 autoLaunchSingleMatch: Bool = true) {
         self.alignment = alignment
         self.textSize = textSize
         self.showDate = showDate
         self.theme = theme
+        self.fontStyle = fontStyle
+        self.lowercaseNames = lowercaseNames
         self.autoLaunchSingleMatch = autoLaunchSingleMatch
     }
 
     public static let `default` = LauncherSettings()
+
+    /// How an item's name is shown in the widget and drawer.
+    public func displayName(_ name: String, locale: Locale = .current) -> String {
+        lowercaseNames ? name.lowercased(with: locale) : name
+    }
 
     // Decode field by field so settings files written by older versions
     // (missing keys) still load, with defaults for whatever is absent.
@@ -61,6 +75,8 @@ public struct LauncherSettings: Codable, Hashable, Sendable {
         textSize = (try? c.decodeIfPresent(TextSize.self, forKey: .textSize)) ?? d.textSize
         showDate = (try? c.decodeIfPresent(Bool.self, forKey: .showDate)) ?? d.showDate
         theme = (try? c.decodeIfPresent(Theme.self, forKey: .theme)) ?? d.theme
+        fontStyle = (try? c.decodeIfPresent(FontStyle.self, forKey: .fontStyle)) ?? d.fontStyle
+        lowercaseNames = (try? c.decodeIfPresent(Bool.self, forKey: .lowercaseNames)) ?? d.lowercaseNames
         autoLaunchSingleMatch = (try? c.decodeIfPresent(Bool.self, forKey: .autoLaunchSingleMatch)) ?? d.autoLaunchSingleMatch
     }
 }

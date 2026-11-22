@@ -39,6 +39,7 @@ struct EditItemView: View {
         Form {
             Section("Name") {
                 TextField("Name", text: $draft.name)
+                    .textInputAutocapitalization(.never)
                     .accessibilityIdentifier("edit.name")
             }
             Section {

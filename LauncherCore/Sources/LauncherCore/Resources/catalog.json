@@ -175,6 +175,11 @@
     "verified": false
   },
   {
+    "name": "Phone",
+    "scheme": "mobilephone://",
+    "verified": false
+  },
+  {
     "name": "Photos",
     "scheme": "photos-redirect://",
     "verified": true

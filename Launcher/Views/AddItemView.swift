@@ -60,7 +60,7 @@ struct ShortcutAddView: View {
         Form {
             Section {
                 TextField("App name, e.g. Spotify", text: $appName)
-                    .textInputAutocapitalization(.words)
+                    .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .accessibilityIdentifier("shortcutAdd.appName")
             } header: {
@@ -95,6 +95,7 @@ struct CustomAddView: View {
         Form {
             Section {
                 TextField("Name", text: $name)
+                    .textInputAutocapitalization(.never)
                 TextField("spotify:// or https://…", text: $link)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()

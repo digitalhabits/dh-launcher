@@ -19,6 +19,7 @@ struct StoreTests {
     @Test func defaultsAreCentredWithoutDate() throws {
         #expect(LauncherSettings.default.showDate == false)
         #expect(LauncherSettings.default.alignment == .center)
+        #expect(LauncherSettings.default.lowercaseNames == true)
         // A settings file without the key (older or hand-written) also gets the default.
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         try Data(#"{"theme":"black"}"#.utf8).write(to: dir.appendingPathComponent(LauncherStore.settingsFile))
@@ -77,5 +78,15 @@ struct StoreTests {
         let nested = LauncherStore(directory: dir.appendingPathComponent("a/b"))
         #expect(nested.saveItems([LauncherItem(name: "x", target: .urlScheme("x://"))]))
         #expect(nested.loadItems().count == 1)
+    }
+}
+
+struct DisplayNameTests {
+    @Test func lowercasesOnlyWhenAsked() {
+        var s = LauncherSettings()
+        #expect(s.displayName("Messages") == "messages")
+        #expect(s.displayName("İstanbul Maps", locale: Locale(identifier: "tr_TR")) == "istanbul maps")
+        s.lowercaseNames = false
+        #expect(s.displayName("Messages") == "Messages")
     }
 }

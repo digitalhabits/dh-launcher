@@ -19,7 +19,7 @@ struct DrawerView: View {
         let settings = model.settings
         VStack(spacing: 0) {
             TextField("", text: $query, prompt: Text("search").foregroundStyle(palette.secondary))
-                .font(.system(size: 20, weight: .light))
+                .font(model.settings.font(size: 20))
                 .foregroundStyle(palette.foreground)
                 .multilineTextAlignment(settings.alignment.text)
                 .textInputAutocapitalization(.never)
@@ -38,7 +38,7 @@ struct DrawerView: View {
                     }
                     if model.items.isEmpty {
                         Button("add your first app") { model.sheet = .add }
-                            .font(settings.textSize.drawerFont)
+                            .font(settings.drawerFont)
                             .foregroundStyle(palette.secondary)
                             .padding(.vertical, 8)
                     }
@@ -75,8 +75,8 @@ struct DrawerView: View {
 
     private func row(_ item: LauncherItem, settings: LauncherSettings) -> some View {
         Button { launch(item) } label: {
-            Text(item.name)
-                .font(settings.textSize.drawerFont)
+            Text(settings.displayName(item.name))
+                .font(settings.drawerFont)
                 .foregroundStyle(palette.foreground)
                 .multilineTextAlignment(settings.alignment.text)
                 .padding(.vertical, 6)
@@ -107,7 +107,7 @@ struct DrawerView: View {
 
     private func footerLink(_ title: String, action: @escaping () -> Void) -> some View {
         Button(title, action: action)
-            .font(.system(size: 15, weight: .regular))
+            .font(model.settings.font(size: 15, weight: .regular))
             .foregroundStyle(palette.secondary)
             .accessibilityIdentifier("drawer.footer.\(title)")
     }

@@ -11,7 +11,7 @@ struct FailureView: View {
         VStack(alignment: .leading, spacing: 22) {
             Spacer()
             Text("Couldn't open \(item.name)")
-                .font(.system(size: 28, weight: .light))
+                .font(model.settings.font(size: 28))
                 .foregroundStyle(palette.foreground)
             Text(explanation)
                 .font(.callout)
@@ -39,7 +39,7 @@ struct FailureView: View {
 
     private func link(_ title: String, action: @escaping () -> Void) -> some View {
         Button(title, action: action)
-            .font(.system(size: 20, weight: .light))
+            .font(model.settings.font(size: 20))
             .foregroundStyle(palette.foreground)
     }
 }

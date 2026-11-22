@@ -29,12 +29,24 @@ extension EnvironmentValues {
 }
 
 extension LauncherSettings.TextSize {
-    var drawerFont: Font {
+    var drawerSize: CGFloat {
         switch self {
-        case .small: .system(size: 20, weight: .light)
-        case .medium: .system(size: 26, weight: .light)
-        case .large: .system(size: 32, weight: .light)
+        case .small: 20
+        case .medium: 26
+        case .large: 32
         }
+    }
+}
+
+extension LauncherSettings {
+    /// Item names in the drawer. Light in the system font; the brand font starts at Regular.
+    var drawerFont: Font {
+        Typography.font(fontStyle, size: textSize.drawerSize, weight: fontStyle == .system ? .light : .regular)
+    }
+
+    /// Any other text drawn in the launcher's own style.
+    func font(size: CGFloat, weight: Font.Weight? = nil) -> Font {
+        Typography.font(fontStyle, size: size, weight: weight ?? (fontStyle == .system ? .light : .regular))
     }
 }
 
