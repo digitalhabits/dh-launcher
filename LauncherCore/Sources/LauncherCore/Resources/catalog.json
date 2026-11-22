@@ -1,0 +1,297 @@
+[
+  {
+    "name": "App Store",
+    "scheme": "itms-apps://",
+    "verified": false
+  },
+  {
+    "name": "Audible",
+    "scheme": "audible://",
+    "verified": false
+  },
+  {
+    "name": "Bluesky",
+    "scheme": "bluesky://",
+    "verified": false
+  },
+  {
+    "name": "Books",
+    "scheme": "ibooks://",
+    "verified": false
+  },
+  {
+    "name": "Calculator",
+    "scheme": "calc://",
+    "verified": false
+  },
+  {
+    "name": "Calendar",
+    "scheme": "calshow://",
+    "verified": true
+  },
+  {
+    "name": "Chrome",
+    "scheme": "googlechrome://",
+    "verified": false
+  },
+  {
+    "name": "Contacts",
+    "scheme": "contacts://",
+    "verified": false
+  },
+  {
+    "name": "Discord",
+    "scheme": "discord://",
+    "verified": false
+  },
+  {
+    "name": "Duolingo",
+    "scheme": "duolingo://",
+    "verified": false
+  },
+  {
+    "name": "Facebook",
+    "scheme": "fb://",
+    "verified": false
+  },
+  {
+    "name": "FaceTime",
+    "scheme": "facetime://",
+    "verified": false
+  },
+  {
+    "name": "Files",
+    "scheme": "shareddocuments://",
+    "verified": true
+  },
+  {
+    "name": "Find My",
+    "scheme": "findmy://",
+    "verified": false
+  },
+  {
+    "name": "Firefox",
+    "scheme": "firefox://",
+    "verified": false
+  },
+  {
+    "name": "Fitness",
+    "scheme": "fitnessapp://",
+    "verified": true
+  },
+  {
+    "name": "Freeform",
+    "scheme": "freeform://",
+    "verified": false
+  },
+  {
+    "name": "Gmail",
+    "scheme": "googlegmail://",
+    "verified": false
+  },
+  {
+    "name": "Google Drive",
+    "scheme": "googledrive://",
+    "verified": false
+  },
+  {
+    "name": "Google Maps",
+    "scheme": "comgooglemaps://",
+    "verified": false
+  },
+  {
+    "name": "Health",
+    "scheme": "x-apple-health://",
+    "verified": true
+  },
+  {
+    "name": "Home",
+    "scheme": "com.apple.home://",
+    "verified": false
+  },
+  {
+    "name": "Instagram",
+    "scheme": "instagram://",
+    "verified": false
+  },
+  {
+    "name": "Kindle",
+    "scheme": "kindle://",
+    "verified": false
+  },
+  {
+    "name": "LinkedIn",
+    "scheme": "linkedin://",
+    "verified": false
+  },
+  {
+    "name": "Mail",
+    "scheme": "message://",
+    "verified": false
+  },
+  {
+    "name": "Maps",
+    "scheme": "maps://",
+    "verified": true
+  },
+  {
+    "name": "Messages",
+    "scheme": "sms:",
+    "verified": true
+  },
+  {
+    "name": "Messenger",
+    "scheme": "fb-messenger://",
+    "verified": false
+  },
+  {
+    "name": "Music",
+    "scheme": "music://",
+    "verified": false
+  },
+  {
+    "name": "Netflix",
+    "scheme": "nflx://",
+    "verified": false
+  },
+  {
+    "name": "News",
+    "scheme": "applenews://",
+    "verified": true
+  },
+  {
+    "name": "Notes",
+    "scheme": "mobilenotes://",
+    "verified": false
+  },
+  {
+    "name": "Notion",
+    "scheme": "notion://",
+    "verified": false
+  },
+  {
+    "name": "Outlook",
+    "scheme": "ms-outlook://",
+    "verified": false
+  },
+  {
+    "name": "Photos",
+    "scheme": "photos-redirect://",
+    "verified": true
+  },
+  {
+    "name": "Pinterest",
+    "scheme": "pinterest://",
+    "verified": false
+  },
+  {
+    "name": "Podcasts",
+    "scheme": "podcasts://",
+    "verified": false
+  },
+  {
+    "name": "Reddit",
+    "scheme": "reddit://",
+    "verified": false
+  },
+  {
+    "name": "Reminders",
+    "scheme": "x-apple-reminderkit://",
+    "verified": true
+  },
+  {
+    "name": "Safari",
+    "scheme": "x-web-search://",
+    "verified": true
+  },
+  {
+    "name": "Shazam",
+    "scheme": "shazam://",
+    "verified": false
+  },
+  {
+    "name": "Shortcuts",
+    "scheme": "shortcuts://",
+    "verified": true
+  },
+  {
+    "name": "Signal",
+    "scheme": "sgnl://",
+    "verified": false
+  },
+  {
+    "name": "Slack",
+    "scheme": "slack://",
+    "verified": false
+  },
+  {
+    "name": "Spotify",
+    "scheme": "spotify://",
+    "verified": false
+  },
+  {
+    "name": "Strava",
+    "scheme": "strava://",
+    "verified": false
+  },
+  {
+    "name": "Teams",
+    "scheme": "msteams://",
+    "verified": false
+  },
+  {
+    "name": "Telegram",
+    "scheme": "tg://",
+    "verified": false
+  },
+  {
+    "name": "Threads",
+    "scheme": "barcelona://",
+    "verified": false
+  },
+  {
+    "name": "TV",
+    "scheme": "videos://",
+    "verified": false
+  },
+  {
+    "name": "Uber",
+    "scheme": "uber://",
+    "verified": false
+  },
+  {
+    "name": "Voice Memos",
+    "scheme": "voicememos://",
+    "verified": false
+  },
+  {
+    "name": "Wallet",
+    "scheme": "shoebox://",
+    "verified": true
+  },
+  {
+    "name": "Weather",
+    "scheme": "weather://",
+    "verified": false
+  },
+  {
+    "name": "WhatsApp",
+    "scheme": "whatsapp://",
+    "verified": false
+  },
+  {
+    "name": "X",
+    "scheme": "twitter://",
+    "verified": false
+  },
+  {
+    "name": "YouTube",
+    "scheme": "youtube://",
+    "verified": false
+  },
+  {
+    "name": "Zoom",
+    "scheme": "zoomus://",
+    "verified": false
+  }
+]
