@@ -7,7 +7,7 @@ What is ready in this folder, and what only the owner can do.
 | Item | File |
 |---|---|
 | Screenshots, 6.9" iPhone (1320×2868), 5 slides in the To-Do style | `screenshots/iphone-6.9/en/` (made by `scripts/store-assets.mjs`) |
-| App Preview video, 6.9" iPhone (886×1920, 30 fps, 19 s, silent AAC) | `app-preview/iphone-6.9-en.mp4` |
+| App Preview video, 6.9" iPhone (886×1920, 30 fps, 18.9 s, silent AAC) | `app-preview/iphone-6.9-en.mp4` |
 | Subtitle (29/30), promotional text (163/170), keywords (98/100), description | `subtitle.txt`, `promotional_text.txt`, `keywords.txt`, `description.txt` |
 | Notes for App Review | `review-notes.txt` |
 | Privacy policy (draft) | `privacy-policy.md` |
@@ -45,5 +45,5 @@ The video was recorded with `xcrun simctl io booted recordVideo`, then made cons
 
 ```bash
 ffmpeg -i raw.mov -vf "fps=30,scale=-2:1920,pad=886:1920:(ow-iw)/2:0:black,format=yuv420p" -an cfr.mp4
-ffmpeg -i cfr.mp4 -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -filter_complex "[0:v]trim=start=1.0:end=20.0,setpts=PTS-STARTPTS[v]" -map "[v]" -map 1:a -c:v libx264 -profile:v high -r 30 -pix_fmt yuv420p -c:a aac -shortest app-preview/iphone-6.9-en.mp4
+ffmpeg -i cfr.mp4 -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -filter_complex "[0:v]trim=start=1.0:end=19.9,setpts=PTS-STARTPTS[v]" -map "[v]" -map 1:a -c:v libx264 -profile:v high -r 30 -pix_fmt yuv420p -c:a aac -shortest app-preview/iphone-6.9-en.mp4
 ```
